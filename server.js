@@ -29,11 +29,11 @@ app.post('/gemini', async (req, res) => {
 });
 
 // Serve static files from the React build folder
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, 'project 2 gemini chatbot/src/build')));
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'project 2 gemini chatbot/src/build/index.html'));
 });
 
 app.listen(8000, () => {
