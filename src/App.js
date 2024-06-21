@@ -21,12 +21,12 @@ const Header = () => (
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        margin-top: 20px;
+        margin-top: 10px;
       }
       .title {
         font-size: 40px;
         font-weight: 900;
-        margin: 10px;
+        margin: 0px;
       }
       @media (max-width: 1300px) {
         .title {
@@ -205,7 +205,7 @@ const App = () => {
         <div className="input-container">
           <input
             value={value}
-            placeholder="chat away..."
+            placeholder="message RASPbot..."
             onChange={(e) => setValue(e.target.value)}
             onKeyPress={handleKeyPress}
             rows="10"
