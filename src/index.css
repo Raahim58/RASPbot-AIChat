@@ -7,8 +7,8 @@ body {
   padding: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #333; /* dark grey background */
-  color: #fff; /* white text color */
+  background-color: #333; 
+  color: #fff; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,7 +21,7 @@ p {
 
 .app {
   width: 80vw;
-  max-width: 1250px; /* Set a maximum width */
+  max-width: 1250px; 
   margin: 5vh auto; /* Center the app with margin */
   height: 70vh; /* Adjust the height to leave some margin at the top and bottom */
   display: flex;
@@ -29,7 +29,7 @@ p {
   justify-content: space-between;
   padding: 20px;
   border-radius: 10px;
-  background-color: #444; /* dark grey background */
+  background-color: #444; 
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
 }
@@ -39,10 +39,10 @@ p {
   overflow-y: auto; /* Ensure the chat history scrolls */
   padding: 20px;
   border-radius: 10px;
-  background-color: #333; /* Same background color as the rest of the page */
+  background-color: #333; 
   flex-grow: 1;
   max-height: 70vh;
-  width: 100%; /* Adjusted width to take full width */
+  width: 100%; 
   box-sizing: border-box;
   font-size: 14px;
 }
@@ -52,7 +52,7 @@ p {
   font-weight: 200;
   text-align: center;
   padding: 20px;
-  color: white; /* White text color */
+  color: white; 
 }
 
 .input-container {
@@ -60,7 +60,7 @@ p {
   align-items: center;
   gap: 10px;
   padding: 10px;
-  background-color: #444; /* dark grey background */
+  background-color: #444; 
   border-radius: 10px;
 }
 
@@ -90,39 +90,32 @@ p {
 }
 
 .input-container button:hover {
-  background-color: #0056b3; /* Hover effect for buttons */
+  background-color: #2b77c8; 
   color: #fff;
-}
-
-.input-container button.clear {
-  background-color: #003366; /* Dark blue color for clear button */
-}
-
-.input-container button.clear:hover {
-  background-color: #002244; /* Darker blue for hover effect on clear button */
 }
 
 .answer {
   display: flex;
   align-items: center;
   justify-content: space-between; /* Ensure the text and button are spaced apart */
-  background-color: #555; /* dark grey background */
+  background-color: #555; 
   color: #fff;
   padding: 10px;
   border-radius: 10px;
   margin-bottom: 10px;
   text-align: right;
+  font-size: 15px;
 }
 
 .answer.user {
   justify-content: flex-end; /* Align content to the right */
   display: flex;
   text-align: right;
-  background-color: transparent; /* Keep the container transparent */
+  background-color: transparent;
 }
 
 .answer.user div {
-  background-color: #0056b3; /* Blue background for the text */
+  background-color: #0056b3; 
   color: #fff;
   padding: 10px;
   border-radius: 10px;
@@ -134,11 +127,11 @@ p {
 
 .answer.model {
   text-align: left;
-  background-color: #333; /* same dark grey background for model */
+  background-color: #333; 
 }
 
 .copy-button {
-  margin-left: 10px; /* Adjust margin for spacing */
+  margin-left: 10px; 
   background: transparent;
   color: #fff;
   border: none;
@@ -160,16 +153,18 @@ p {
 
 .prompts button {
   padding: 10px 10px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: #89baeea2;
+  color: #3c1414;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
 }
 
 .prompts button:hover {
   background-color: #0056b3;
+  color: #fff;
 }
 
 .copy-message {
@@ -201,6 +196,12 @@ p {
   }
 }
 
+@media (max-width: 1000px) {
+  .no-chat {
+    font-size: 40px;
+  }
+}
+
 @media (max-width: 768px) {
   .app {
     width: 90vw;
@@ -209,7 +210,7 @@ p {
 
   .input-container {
     flex-direction: column;
-    align-items: center; /* Center items on smaller screens */
+    align-items: center; 
     margin-bottom: 5px;
   }
 
@@ -252,5 +253,8 @@ p {
   .prompts button {
     margin: 5px;
     padding: 4px 8px;
+  }
+  .no-chat {
+    font-size: 20px;
   }
 }

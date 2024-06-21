@@ -4,16 +4,29 @@ import "./index.css";
 
 const Header = () => (
   <header className="header">
-    <span className="title">RASPberry</span>
+    <img className="image" src="logo192.png" alt="Logo" />
+    <span className="title">
+      <span className="rasp" style={{ color: '#FF69B4' }}>RASP</span>
+      <span className="bot" style={{ color: '#FFFFC4' }}>bot</span>
+    </span>
     <style jsx>{`
+      .image {
+        width: 40px;
+        height: 40px;
+        borderRadius: '50%'; 
+        margin: 10px;
+      }
       .header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
         margin-top: 20px;
-        text-align: center;
       }
       .title {
         font-size: 40px;
         font-weight: 900;
-        color: #40E0D0;
+        margin: 10px;
       }
       @media (max-width: 1300px) {
         .title {
@@ -90,8 +103,8 @@ const App = () => {
   const searchResultRef = useRef(null);
 
   const surpriseOptions = [
-    'Who won the latest Nobel Peace Prize?',
-    'Where does pizza come from?',
+    'Is it really worth it?',
+    'Make me an itenary for a trip to Norway',
     'How do you make a samosa?',
     'How much GPA does one require to get into Harvard for Masters in Data Science?'
   ];
