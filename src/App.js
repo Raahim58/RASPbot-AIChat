@@ -1,4 +1,84 @@
 import { useState, useEffect, useRef } from "react";
+import { FaGithub, FaLinkedin, FaYoutube, FaCopy, FaBlog } from 'react-icons/fa';
+import "./index.css";
+
+const Header = () => (
+  <header className="header">
+    <span className="title">RASPberry</span>
+    <style jsx>{`
+      .header {
+        margin-top: 20px;
+        text-align: center;
+      }
+      .title {
+        font-size: 40px;
+        font-weight: 900;
+        color: #40E0D0;
+      }
+      @media (max-width: 1300px) {
+        .title {
+          font-size: 24px;
+        }
+      }
+    `}</style>
+  </header>
+);
+
+const Footer = () => (
+  <footer className="footer">
+    <div className="icons">
+      <a href="https://github.com/Raahim58/" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
+      <a href="https://linkedin.com/in/raahim-poonawala" target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>
+      <a href="https://www.youtube.com/channel/UCCgYjtpAbT5_PQEYJlt3pCg" target="_blank" rel="noopener noreferrer"><FaYoutube /></a>
+      <a href="https://tllai1.wixsite.com/raahim/home" target="_blank" rel="noopener noreferrer"><FaBlog /></a>
+    </div>
+    <div className="copyright">
+      <span>©2024 All rights reserved by Raahim Poonawala</span>
+    </div>
+    <style jsx>{`
+      .footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 0px;
+      }
+      .icons {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+      .icons a {
+        color: #fff;
+        font-size: 25px;
+        margin: 0px 10px;
+        transition: color 0.3s;
+      }
+      .icons a:hover {
+        color: #0056b3;
+      }
+      .copyright {
+        font-size: 15px;
+        text-align: center;
+        margin: 0px;
+        color: #fff;
+      }
+      @media (max-width: 1300px) {
+        .icons {
+          flex-direction: row;
+          margin: 5px;
+        }
+        .icons a {
+          font-size: 24px;
+          margin: 5px;
+        }
+        .copyright {
+          font-size: 12px;
+        }
+      }
+    `}</style>
+  </footer>
+);
 
 const App = () => {
   const [value, setValue] = useState("");
@@ -6,6 +86,7 @@ const App = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const [showPrompts, setShowPrompts] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [copyMessage, setCopyMessage] = useState("");
   const searchResultRef = useRef(null);
 
   const surpriseOptions = [
@@ -37,17 +118,20 @@ const App = () => {
       };
       const response = await fetch('http://localhost:8000/gemini', options);
       const data = await response.text();
-      setChatHistory(oldChatHistory => [
-        ...oldChatHistory, 
+      const formattedData = data.replace(/\*([^\*]+)\*/g, "<b>$1</b>").replace(/\n/g, "<br/>");
+      const newChatHistory = [
+        ...chatHistory, 
         {
           role: "user",
           parts: [{ text: value }]
         },
         {
           role: "model",
-          parts: [{ text: data.replace(/\*([^\*]+)\*/g, "<b>$1</b>").replace(/\n/g, "<br/>") }]
+          parts: [{ text: formattedData }]
         }
-      ]);
+      ];
+      setChatHistory(newChatHistory);
+      localStorage.setItem('chatHistory', JSON.stringify(newChatHistory));
       setValue("");
       setShowPrompts(false);
     } catch (error) {
@@ -62,6 +146,7 @@ const App = () => {
     setError("");
     setChatHistory([]);
     setShowPrompts(true);
+    localStorage.removeItem('chatHistory');
   };
 
   const handleKeyPress = (event) => {
@@ -71,6 +156,14 @@ const App = () => {
   };
 
   useEffect(() => {
+    const savedChatHistory = localStorage.getItem('chatHistory');
+    if (savedChatHistory) {
+      setChatHistory(JSON.parse(savedChatHistory));
+      setShowPrompts(false);
+    }
+  }, []);
+
+  useEffect(() => {
     if (searchResultRef.current) {
       searchResultRef.current.scrollTop = searchResultRef.current.scrollHeight;
     }
@@ -78,54 +171,65 @@ const App = () => {
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(() => {
-      alert("Copied to clipboard!");
+      setCopyMessage("Copied to clipboard!");
+      setTimeout(() => {
+        setCopyMessage("");
+      }, 5000);
     });
   };
 
   return (
-    <div className="app">
-      {showPrompts && (
-        <div className="prompts">
-          {surpriseOptions.map((option, index) => (
-            <button key={index} className="surprise" onClick={() => surprise(option)}>{option}</button>
-          ))}
+    <>
+      <Header />
+      <div className="app">
+        {showPrompts && (
+          <div className="prompts">
+            {surpriseOptions.map((option, index) => (
+              <button key={index} className="surprise" onClick={() => surprise(option)}>{option}</button>
+            ))}
+          </div>
+        )}
+        <div className="input-container">
+          <input
+            value={value}
+            placeholder="chat away..."
+            onChange={(e) => setValue(e.target.value)}
+            onKeyPress={handleKeyPress}
+            rows="10"
+          />
+          <button onClick={getResponse} disabled={!value}>
+            Ask me
+          </button>
+          {chatHistory.length > 0 && <button onClick={clear}>Clear</button>}
         </div>
-      )}
-      <div className="input-container">
-        <input 
-          value={value}
-          placeholder="chat away..."
-          onChange={(e) => setValue(e.target.value)}
-          onKeyPress={handleKeyPress}
-        />
-        <button onClick={getResponse} disabled={!value}>
-          Ask me
-        </button>
-        {chatHistory.length > 0 && <button onClick={clear}>Clear</button>}
+        {error && <p>{error}</p>}
+        <div className="search-result" ref={searchResultRef}>
+          {chatHistory.length === 0 && !loading && (
+            <div className="no-chat"><span style={{color: "lightgreen"}}>Hello, <br /> what can I do for you today?</span></div>
+          )}
+          {chatHistory.map((chatItem, index) => (
+            <div key={index} className={`answer ${chatItem.role}`}>
+              <div dangerouslySetInnerHTML={{ __html: chatItem.parts.map(part => part.text).join(', ') }} />
+              {chatItem.role === "model" && (
+                <button className="copy-button rounded-lg" onClick={() => copyToClipboard(chatItem.parts.map(part => part.text).join(', '))}>
+                  <FaCopy />
+                </button>
+              )}
+            </div>
+          ))}
+          {loading && (
+            <div className="answer">
+              <div className="loading"></div>
+            </div>
+          )}
+        </div>
+        {copyMessage && <div className="copy-message">{copyMessage}</div>}
       </div>
-      {error && <p>{error}</p>}
-      <div className="search-result" ref={searchResultRef}>
-        {chatHistory.length === 0 && !loading && (
-          <div className="no-chat"><span style={{color: "lightgreen"}}>Hello, <br /> what can I do for you today?</span></div>
-        )}
-        {chatHistory.map((chatItem, index) => (
-          <div key={index} className={`answer ${chatItem.role}`}>
-            <div dangerouslySetInnerHTML={{ __html: chatItem.parts.map(part => part.text).join(', ') }} />
-            {chatItem.role === "model" && (
-              <button className="copy-button" onClick={() => copyToClipboard(chatItem.parts.map(part => part.text).join(', '))}>
-                <i className="fas fa-copy" aria-hidden="true"></i>
-              </button>
-            )}
-          </div>
-        ))}
-        {loading && (
-          <div className="answer">
-            <div className="loading"></div>
-          </div>
-        )}
-      </div>
-    </div>
+      <Footer />
+    </>
   );
 }
 
 export default App;
+
+
