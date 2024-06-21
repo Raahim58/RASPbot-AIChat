@@ -3,14 +3,15 @@
 }
 
 body {
-  margin: 10;
+  margin: 0;
   padding: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #fafafc;
-  color: #777;
+  background-color: #333; /* dark grey background */
+  color: #fff; /* white text color */
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 p {
@@ -20,15 +21,73 @@ p {
 
 .app {
   width: 80vw;
-  margin: 10vw;
-  height: 80vh;
+  max-width: 800px; /* Set a maximum width */
+  margin: 5vh auto; /* Center the app with margin */
+  height: 90vh; /* Adjust the height to leave some margin at the top and bottom */
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #444; /* dark grey background */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
 }
 
 .search-result {
   margin-top: 10px;
-  overflow: scroll;
+  overflow-y: auto; /* Ensure the chat history scrolls */
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #333; /* Same background color as the rest of the page */
+  flex-grow: 1;
+  max-height: 70vh;
+  width: 100%; /* Adjusted width to take full width */
+  box-sizing: border-box;
+  font-size: 18px;
+  padding-right: 40px; /* Added padding to make room for the copy button */
+}
+
+.answer {
+  width: 100%; /* Adjusted width to take full width */
+  padding: 13px 20px; /* Equal padding from both sides */
+  margin: 5px 0;
+  font-size: 18px;
+  font-weight: 200;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.answer.copy-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 10px;
+  cursor: pointer;
+  color: #666;
+}
+
+.answer.copy-button:hover {
+  color: #333;
+}
+
+.answer.copy-button i {
+  font-size: 18px;
+}
+
+.answer.user {
+  background-color: #a8e6cf; /* Complementary color for user */
+  text-align: right;
+  color: #000; /* Black text color for user */
+}
+
+.answer.model {
+  background-color: #333; /* Dark grey background for model */
+  border: 4px solid #444; /* Add a border around the model's response */
+  border-radius: 6px; /* Add a slight curve to the border */
+  padding: 10px; /* Add some padding to make the border visible */
+  text-align: left;
+  color: #fff; /* White text color for model */
 }
 
 .surprise {
@@ -39,16 +98,24 @@ p {
   padding: 4px 12px;
   margin: 0 0 2px 5px;
   border: none;
+  cursor: pointer;
+}
+
+.surprise:hover {
+  background-color: #ddd;
 }
 
 .input-container {
-  width: 100%;
+  width: 100%; /* Ensure the input container is full width */
   display: flex;
   border: solid 0.5px #cacaca;
   box-sizing: border-box;
   border-radius: 6px;
-  box-shadow: rgba(0,0,82,0.15) 0 2px 4px;
+  box-shadow: rgba(0, 0, 82, 0.15) 0 2px 4px;
   overflow: hidden;
+  background-color: #f7f7f7; /* Light grey background */
+  padding: 10px; /* Add some padding */
+  margin-top: 20px; /* Add some margin top */
 }
 
 .input-container input {
@@ -57,8 +124,10 @@ p {
   box-sizing: border-box;
   font-size: 15px;
   outline: none;
-  width: 90%;
+  width: 90%; /* Adjusted width */
   font-weight: 200;
+  color: #000; /* Black text color */
+  background-color: #f7f7f7; /* Light grey background */
 }
 
 .input-container input::placeholder {
@@ -67,25 +136,83 @@ p {
 }
 
 .input-container button {
-  min-width: 10%;
+  width: 10%;
   border: none;
   border-left: 1px solid #cacaca;
-  background-color: #fff;
+  background-color: #f7f7f7; /* Light grey background */
   color: #777;
   font-weight: bold;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.input-container button:active {
+.input-container button:hover {
   background-color: #cacaca;
 }
 
-.answer {
-  padding: 13px 14px;
-  border: solid 0.5px #cacaca;
-  background-color: white;
-  margin: 5px;
-  font-size: 15px;
+.no-chat {
+  font-size: 60px;
   font-weight: 200;
-  border-radius: 6px;
+  text-align: center;
+  padding: 20px;
+  color: white; /* White text color */
+}
+
+.prompts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.prompts button {
+  margin: 5px;
+  background-color: #ececef;
+  color: #000;
+  border-radius: 5px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.prompts button:hover {
+  background-color: #ddd;
+}
+
+.loading {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #444;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .app {
+    width: 90vw;
+    margin: 5vw;
+  }
+  .input-container {
+    flex-direction: column;
+  }
+  .input-container input {
+    width: 100%;
+  }
+  .input-container button {
+    width: 100%;
+  }
 }
