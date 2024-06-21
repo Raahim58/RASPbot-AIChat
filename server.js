@@ -10,23 +10,25 @@ const PORT = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json());
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEN_AI_KEY);
+const genAI = new GoogleGenerativeAI({ apiKey: process.env.GOOGLE_GEN_AI_KEY });
 
 // API endpoint for handling gemini chat
 app.post('/gemini', async (req, res) => {
-    console.log(req.body.history);
-    console.log(req.body.message);
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    try {
+        console.log(req.body.history);
+        console.log(req.body.message);
 
-    const chat = model.startChat({
-        history: req.body.history
-    });
+        const model = await genAI.model('models/gemini-pro');
+        const chat = await model.chat({
+            history: req.body.history,
+            prompt: req.body.message,
+        });
 
-    const msg = req.body.message;
-    const result = await chat.sendMessage(msg);
-    const response = await result.response;
-    const text = response.text();
-    res.send(text);
+        res.send(chat.data.text);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('An error occurred while processing your request.');
+    }
 });
 
 // Serve static files from the React build folder
