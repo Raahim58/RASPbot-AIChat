@@ -129,7 +129,7 @@ const App = () => {
           'Content-Type': 'application/json'
         }
       };
-      const response = await fetch('/gemini', options);
+      const response = await fetch('https://raspbot.vercel.app/:8000/gemini', options);
       const data = await response.text();
       const formattedData = data
         .replace(/\*([^*]+)\*/g, "<b>$1</b>") // Replaces *text* with <b>text</b>
@@ -205,12 +205,12 @@ const App = () => {
           </div>
         )}
         <div className="input-container">
-          <input
+          <textarea
             value={value}
             placeholder="message RASPbot..."
             onChange={(e) => setValue(e.target.value)}
             onKeyPress={handleKeyPress}
-            rows="10"
+            rows="90"
           />
           <button onClick={getResponse} disabled={!value}>
             Ask me
