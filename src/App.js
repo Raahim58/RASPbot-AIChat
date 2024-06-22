@@ -131,7 +131,9 @@ const App = () => {
       };
       const response = await fetch('http://localhost:8000/gemini', options);
       const data = await response.text();
-      const formattedData = data.replace(/\*([^\*]+)\*/g, "<b>$1</b>").replace(/\n/g, "<br/>");
+      const formattedData = data
+        .replace(/\*([^*]+)\*/g, "<b>$1</b>") // Replaces *text* with <b>text</b>
+        .replace(/\n/g, "<br/>"); // Replaces newline characters with <br/>
       const newChatHistory = [
         ...chatHistory, 
         {
