@@ -129,7 +129,7 @@ const App = () => {
           'Content-Type': 'application/json'
         }
       };
-      const response = await fetch('http://localhost:8000/gemini', options);
+      const response = await fetch('/gemini', options);
       const data = await response.text();
       const formattedData = data
         .replace(/\*([^*]+)\*/g, "<b>$1</b>") // Replaces *text* with <b>text</b>
